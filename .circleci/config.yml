@@ -1,0 +1,51 @@
+version: 2.1
+executors:
+  remote-executor:
+    docker:
+      - image: circleci/python:3.9
+
+jobs:
+  build-and-deploy:
+    executor: remote-executor
+    steps:
+      - setup_remote_docker:
+          version: 20.10.7
+
+      - add_ssh_keys:
+          fingerprints:
+            - "YOUR_SSH_KEY_FINGERPRINT"
+
+      - run:
+          name: Build and Push Docker Image
+          command: |
+            # Build your Docker image
+            docker build -t your-dockerhub-username/your-image:latest .
+
+            # Authenticate with DockerHub
+            echo "$DOCKERHUB_PASSWORD" | docker login --username your-dockerhub-username --password-stdin
+
+            # Push the Docker image to DockerHub
+            docker push your-dockerhub-username/your-image:latest
+
+      - run:
+          name: Pull Image and Deploy
+          command: |
+            # SSH into the remote instance
+            ssh -i /path/to/your/private/key -o StrictHostKeyChecking=no username@remote-host << EOF
+
+            # Pull the latest image from DockerHub
+            docker pull your-dockerhub-username/your-image:latest
+
+            # Run the image on the remote instance
+            docker run -d -p 8080:8080 your-dockerhub-username/your-image:latest
+
+            EOF
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - build-and-deploy:
+          filters:
+            branches:
+              only: main
