@@ -25,9 +25,10 @@ jobs:
       - run:
          name: Pull Image and Deploy
          command: |
-            ssh -o "StrictHostKeyChecking=no" -i ./privateKey.pem ubuntu@$HOST
+            ssh -o "StrictHostKeyChecking=no" -i ./privateKey.pem ubuntu@$HOST '
             sudo docker pull nurisa/docker-tutorial:latest
-            sudo docker run -d -p 8080:8080 nurisa/docker-tutorial:latest
+            sudo docker run -d -p 80:8080 nurisa/docker-tutorial:latest 
+           '
 
 workflows:
   deploy:
