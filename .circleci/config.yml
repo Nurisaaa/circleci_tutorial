@@ -5,6 +5,8 @@ jobs:
     docker:
       - image: docker:20.10.9
     steps:
+      - checkout
+      - setup_remote_docker
       - run:
           name: Build and Push Docker Image
           command: |
