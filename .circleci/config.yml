@@ -6,22 +6,22 @@ jobs:
       - image: circleci/node:14
     steps:
       - run:
-          name: Build and Push Docker Image
-          command: |
-            docker build -t nurisa/docker-tutorial:latest .
+         name: Build and Push Docker Image
+         command: |
+            docker build -t nurisa/docker-tutorial:latest -f Dockerfile .
 
             echo "$DOCKERHUB_PASSWORD" | docker login --username nurisa --password-stdin
 
             docker push nurisa/docker-tutorial:latest
 
       - run:
-          name: Install SSH And Configure
-          command: |
+         name: Install SSH And Configure
+         command: |
             echo $SSH_PRIVATE_KEY | base64 --decode > ./privateKey.pem
             chmod 400 privateKey.pem
       - run:
-          name: Pull Image and Deploy
-          command: |
+         name: Pull Image and Deploy
+         command: |
             # SSH into the remote instance
               ssh -o "StrictHostKeyChecking=no" -i ./privateKey.pem ubuntu@$HOST
 
