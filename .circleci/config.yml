@@ -9,9 +9,7 @@ jobs:
          name: Build and Push Docker Image
          command: |
             docker build -t nurisa/docker-tutorial:latest -f Dockerfile .
-
             echo "$DOCKERHUB_PASSWORD" | docker login --username nurisa --password-stdin
-
             docker push nurisa/docker-tutorial:latest
 
       - run:
@@ -22,13 +20,8 @@ jobs:
       - run:
          name: Pull Image and Deploy
          command: |
-            # SSH into the remote instance
-              ssh -o "StrictHostKeyChecking=no" -i ./privateKey.pem ubuntu@$HOST
-
-            # Pull the latest image from DockerHub
+            ssh -o "StrictHostKeyChecking=no" -i ./privateKey.pem ubuntu@$HOST
             docker pull nurisa/docker-tutorial:latest
-
-            # Run the image on the remote instance
             docker run -d -p 8080:8080 nurisa/docker-tutorial:latest
 
 workflows:
