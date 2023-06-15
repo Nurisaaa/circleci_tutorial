@@ -8,13 +8,10 @@ jobs:
       - run:
           name: Build and Push Docker Image
           command: |
-            # Build your Docker image
             docker build -t nurisa/docker-tutorial:latest .
 
-            # Authenticate with DockerHub
             echo "$DOCKERHUB_PASSWORD" | docker login --username nurisa --password-stdin
 
-            # Push the Docker image to DockerHub
             docker push nurisa/docker-tutorial:latest
 
       - run:
