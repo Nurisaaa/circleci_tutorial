@@ -28,7 +28,7 @@ jobs:
             ssh -o "StrictHostKeyChecking=no" -i ./privateKey.pem ubuntu@$HOST '
             sudo docker pull nurisa/docker-tutorial:latest
             sudo docker run -d -p 80:8080 nurisa/docker-tutorial:latest 
-           '
+            '
 
 workflows:
   deploy:
