@@ -18,8 +18,8 @@ jobs:
       - image: circleci/node:14
     steps:
       - run:
-          name: Install SSH And Configure
-          command: |
+         name: Install SSH And Configure
+         command: |
               echo "$SSH_PRIVATE_KEY" | base64 -d > ./privateKey.pem
               chmod 400 privateKey.pem
       - run:
