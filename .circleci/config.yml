@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  build-and-deploy:
+  build-and-push:
     docker:
       - image: docker:20.10.9
     steps:
@@ -32,11 +32,13 @@ jobs:
 workflows:
   deploy:
     jobs:
-      - build-and-deploy:
+      - build-and-push:
           filters:
             branches:
               only: master
       - pull-and-deploy:
+          requires:
+            - build-and-push
           filters:
             branches:
               only: master
