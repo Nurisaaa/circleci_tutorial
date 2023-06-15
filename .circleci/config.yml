@@ -18,9 +18,13 @@ jobs:
           command: |
             echo "$SSH_PRIVATE_KEY" | base64 -d > ./privateKey.pem
             chmod 400 privateKey.pem
+  pull-and-deploy:
+    docker:
+      - image: circleci/node:14
+    steps:
       - run:
-          name: Pull Image and Deploy
-          command: |
+         name: Pull Image and Deploy
+         command: |
             ssh -o "StrictHostKeyChecking=no" -i ./privateKey.pem ubuntu@$HOST
             sudo docker pull nurisa/docker-tutorial:latest
             sudo docker run -d -p 8080:8080 nurisa/docker-tutorial:latest
@@ -29,6 +33,10 @@ workflows:
   deploy:
     jobs:
       - build-and-deploy:
+          filters:
+            branches:
+              only: master
+      - pull-and-deploy:
           filters:
             branches:
               only: master
