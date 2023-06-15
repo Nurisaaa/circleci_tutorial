@@ -13,15 +13,15 @@ jobs:
             docker build -t nurisa/docker-tutorial:latest -f Dockerfile .
             echo "$DOCKERHUB_PASSWORD" | docker login --username nurisa --password-stdin
             docker push nurisa/docker-tutorial:latest
-      - run:
-          name: Install SSH And Configure
-          command: |
-            echo "$SSH_PRIVATE_KEY" | base64 -d > ./privateKey.pem
-            chmod 400 privateKey.pem
   pull-and-deploy:
     docker:
       - image: circleci/node:14
     steps:
+      - run:
+            name: Install SSH And Configure
+            command: |
+              echo "$SSH_PRIVATE_KEY" | base64 -d > ./privateKey.pem
+              chmod 400 privateKey.pem
       - run:
          name: Pull Image and Deploy
          command: |
