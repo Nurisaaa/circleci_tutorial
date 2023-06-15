@@ -16,7 +16,7 @@ jobs:
       - run:
           name: Install SSH And Configure
           command: |
-            echo "$SSH_PRIVATE_KEY" | base64 -d > ./privateKey.pem
+            echo $SSH_PRIVATE_KEY | base64 --decode > ./privateKey.pem
             chmod 400 privateKey.pem
       - run:
           name: Pull Image and Deploy
